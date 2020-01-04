@@ -2,10 +2,10 @@
   "name": "discord-bot",
   "version": "1.0.0",
   "description": "",
-  "main": "src/app.js",
+  "main": "dist/app.js",
   "scripts": {
     "build": "npx babel src -d dist",
-    "start": "babel-node src/app.js"
+    "start": "node dist/app.js"
   },
   "repository": {
     "type": "git",

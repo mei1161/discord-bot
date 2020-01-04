@@ -1,8 +1,9 @@
 import discord from 'discord.js';
 import dotenv from 'dotenv';
 
-
-dotenv.config();
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
 
 const env = process.env;
 
