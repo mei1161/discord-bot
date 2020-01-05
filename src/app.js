@@ -1,9 +1,13 @@
 import discord from 'discord.js';
 import dotenv from 'dotenv';
+import fs from 'fs-extra';
 
+// 設定の読み込み
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
 }
+const zoi_list = fs.readJsonSync('./data/zoi.json');
+
 
 const env = process.env;
 
@@ -55,8 +59,11 @@ client.on('message', async message => {
    
     embed = embed.setColor(0xFF0000);
     message.channel.send(embed);
+  }else if(command === '今日も１日'){
+    const image = zoi_list[Math.floor(Math.random() * zoi_list.length)];
+    const attachment = new discord.Attachment(image);
+    message.channel.send(attachment);
   }
-
 
   
 });
