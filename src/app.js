@@ -1,6 +1,7 @@
 import discord from 'discord.js';
 import dotenv from 'dotenv';
 import fs from 'fs-extra';
+import axios from 'axios';
 
 // 設定の読み込み
 if (process.env.NODE_ENV !== 'production') {
@@ -33,11 +34,12 @@ client.on('message', async message => {
   if (command === "ping") {
     const m = await message.channel.send("Ping?");
     m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
-  }else if(message.content === "hello"){
-    await message.channel.send("hello");
+  }
+  if(command === "hello"){
+    message.channel.send("hello");
   }
 
-  if (command === 'embed') {
+   if (command === 'embed') {
     let embed = new discord.RichEmbed();
     if (args[0] != undefined)
     {
@@ -59,10 +61,21 @@ client.on('message', async message => {
    
     embed = embed.setColor(0xFF0000);
     message.channel.send(embed);
-  }else if(command === '今日も１日'){
+  }
+  if(command === '今日も１日'){
     const image = zoi_list[Math.floor(Math.random() * zoi_list.length)];
     const attachment = new discord.Attachment(image);
     message.channel.send(attachment);
+  }
+  if(command === 'address'){
+    let zipcode;
+    if(args[0] != undefined){
+      zipcode = args[0];
+      const url = `http://zipcloud.ibsnet.co.jp/api/search?zipcode=${zipcode}`;
+      const res = await axios.get(url);
+      const items = res.data;
+      message.channel.send(`${items.results[0]['address1']}${items.results[0]['address2']}${items.results[0]['address3']}`);
+    }
   }
 
   
