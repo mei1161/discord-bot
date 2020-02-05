@@ -9,8 +9,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const zoi_list = fs.readJsonSync('./data/zoi.json');
 
-
 const env = process.env;
+const appid =env.APPID;
 
 const client = new discord.Client();
 
@@ -62,7 +62,7 @@ client.on('message', async message => {
     embed = embed.setColor(0xFF0000);
     message.channel.send(embed);
   }
-  if(command === '今日も１日'){
+  else if(command === '今日も１日'){
     const image = zoi_list[Math.floor(Math.random() * zoi_list.length)];
     const attachment = new discord.Attachment(image);
     message.channel.send(attachment);
@@ -75,6 +75,20 @@ client.on('message', async message => {
       const res = await axios.get(url);
       const items = res.data;
       message.channel.send(`${items.results[0]['address1']}${items.results[0]['address2']}${items.results[0]['address3']}`);
+    }
+  }
+  if(command === 'weather'){
+    let cityname;
+    if(args[0] != undefined){
+      cityname = args[0];
+      const url = `http://api.openweathermap.org/data/2.5/weather?q=${cityname}&units=metric&APPID=${appid}`
+      const res = await axios.get(url);
+      const items = res.data;
+      const ms1 = `天気:${items.weather[0].main}`;
+      const ms2 = `平均気温:${(items.main.temp)}℃ `
+      const ms3 = `湿度:${items.main.humidity}%`
+      const ms4 = `体感温度:${items.main.feels_like}℃`
+      message.channel.send(ms1+ms2+ms3+ms4);
     }
   }
 
