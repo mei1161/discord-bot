@@ -91,6 +91,25 @@ client.on('message', async message => {
       message.channel.send(ms1+ms2+ms3+ms4);
     }
   }
+  if(command === 'qiita'){
+    let session;
+    let day;
+    let ms =" ";
+    if(args[0] != undefined){
+      session = args[0];
+    }
+    if(args[1] != undefined){
+      day = args[1];
+      const url = `https://us-central1-qiita-trend-web-scraping.cloudfunctions.net/qiitaScraiping/${session}/${day}`;
+      const res = await axios.get(url);
+      const items = res.data;
+      for(let item in items.data){
+        ms += `タイトル：${items.data[item].title} `;
+        ms += `URL：${items.data[item].url} `;
+      }
+      message.channel.send(ms);
+    }
+  }
 
   
 });
