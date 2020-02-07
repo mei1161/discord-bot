@@ -10,7 +10,8 @@ if (process.env.NODE_ENV !== 'production') {
 const zoi_list = fs.readJsonSync('./data/zoi.json');
 
 const env = process.env;
-const appid =env.APPID;
+const appid = env.APPID;
+const devid = env.DEVID;
 
 const client = new discord.Client();
 
@@ -109,6 +110,22 @@ client.on('message', async message => {
       }
       message.channel.send(ms);
     }
+  }
+  if(command === "楽天"){
+    let keyword;
+    let ms;
+    if(args[0] != undefined){
+      keyword = args[0];
+      let key_UTF8 = encodeURI(keyword);
+      const url = `https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706?applicationId=${devid}&keyword=${key_UTF8}&sort=standard`;
+      const res = await axios.get(url);
+      const items = res.data;
+      for(let item of items.Items){
+        ms += `${item.Item.itemUrl}  `;
+      }
+      message.channel.send(ms);
+    }
+
   }
 
   
