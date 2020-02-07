@@ -121,7 +121,7 @@ client.on('message', async message => {
       const res = await axios.get(url);
       const items = res.data;
       for(let item of items.Items){
-        ms += `${item.Item.itemUrl}  `;
+        ms += `${item.Item.itemUrl} `;
       }
       message.channel.send(ms);
     }
