@@ -1,4 +1,4 @@
-import discord from 'discord.js';
+import discord, { DiscordAPIError } from 'discord.js';
 import dotenv from 'dotenv';
 import fs from 'fs-extra';
 import axios from 'axios';
@@ -25,6 +25,9 @@ client.on('guildMemberAdd', async member => {
   if (!channel) return;
   channel.send(`まちこのおうちへようこそ！` + member);
 });
+
+
+
 
 client.on('message', async message => {
   if (message.author.id == client.user.id) {
